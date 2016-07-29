@@ -15,7 +15,7 @@ while [ $# -ge 1 ] ; do
         shift
 
 	echo `date`
-	echo -e "Simulation \t Cores \t Subdomains \t Levels \t Segment \t Latest Time"
+	echo -e "Simulation\tCores\tSubds\tLevels\tSegment\tTime"
 
 	for run in $sdbase ; do 
 		cd $run
@@ -30,7 +30,7 @@ while [ $# -ge 1 ] ; do
 		levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" | grep "BaseName = IntervalB-Lev" | wc -l )
 #		levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" | grep "BaseName = Interval-Lev" | wc -l )
 		subdomains=$(/RQusagers/brege/SpEC/Support/bin/DomainInfo -Nsubdomains -d "${run}/${seg}/Run/NextHyDomain.input" -IgnoreHist)
-		echo -e $jobname "\t" $cores "\t" $subdomains "\t\t" $levels "\t\t" $seg "\t"  $latesttime
+		echo -e $jobname"\t"$cores"\t"$subdomains"\t"$levels"\t"$seg"\t"$latesttime
 
 
 	done
