@@ -59,14 +59,39 @@ while [ $# -ge 1 ] ; do
 			echo $hytimes 1> "${basedir}/tmp/hytimes.txt"
 
 			hytime=$(python $basedir/scripts/"match-domain-time-to-pv-file.py")
+			echo "h5time is: " $h5time
 			echo "hytime is: " $hytime
 
 			OLDIFS=$IFS
 			IFS=$'\n'
 			hydomain="${run}/${seg}/Run/HyDomainAtTime-    ${hytime}.txt"
-			echo "hydomain: " $hydomain 
+			echo "hydomain is: " $hydomain 
 			echo " "  
+
+			jobname=$(grep -i "Jobname" "${run}/${seg}/Run/MakeSubmit.input" | awk -F" " '{print $3}')
+			vizdir="${basedir}/viz/${jobname}/${seg}"
+			if [ ! -d "${vizdir}" ]
+			then
+				mkdir -p "${vizdir}"
+				echo "created viz directory: " $vizdir
+			        ApplyObservers \
+			        -h5prefix Vars \
+			        -UseTimes $h5time \
+			        -NoDomainHistory \
+			        -domaindir "${run}/${seg}/Run" \
+			        -domaininput "HyDomainAtTime-    ${hytime}.txt" \
+			        -outputdir "${basedir}/viz/${jobname}/${seg}" \
+			        -c "Subdomain(Items=ReadTensorFromDisk(Input=Rho0Phys;Time=${h5time};DeltaT=0.1;Dim=3;Dir=${run}/${seg}/Run/VolumeMatterData/;RankSymm=;Output=Rho0Phys;H5FilePrefix=Vars;),ReadTensorFromDisk(Input=Temp;Time=${h5time};DeltaT=0.1;Dim=3;Dir=${run}/${seg}/Run/VolumeMatterData/;RankSymm=;Output=Temp;H5FilePrefix=Vars;),)" \
+			        -o "ConvertToVtk(Input=Rho0Phys,Temp; Basename=${h5time}_paraviewdata)"
+				echo "new paraview data extracted in ${basedir}/viz/${jobname}/${seg}/${h5time}_paraviewdata"
+			else
+			        echo "Viz directory already exists!: " $vizdir
+			fi
+
 			IFS=$OLDIFS
+
+                        rm "${basedir}/tmp/h5time.txt"
+                        rm "${basedir}/tmp/hytimes.txt"
 
 		fi
 	done
