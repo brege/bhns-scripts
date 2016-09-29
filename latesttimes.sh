@@ -27,9 +27,15 @@ while [ $# -ge 1 ] ; do
 		jobname=$(grep -i "Jobname" "${run}/${seg}/Run/MakeSubmit.input" | awk -F" " '{print $3}')
 		cores=$(grep -i '^Cores\ =\ 144$\|^Cores\ =\ 96$' "${run}/${seg}/Run/MakeSubmit.input" | awk -F" " '{print $3}')
 		latesttime=$(tail -n 1 "${run}/${seg}/Run/TStepperDiag.dat" | awk -F" " '{print $1}')
-		levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" | grep "BaseName = IntervalB-Lev" | wc -l )
-#		levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" | grep "BaseName = Interval-Lev" | wc -l )
-		subdomains=$(/RQusagers/brege/SpEC/Support/bin/DomainInfo -Nsubdomains -d "${run}/${seg}/Run/NextHyDomain.input" -IgnoreHist)
+		if [ ! -f "${run}/${seg}/Run/NextHyDomain.input" ]
+		then
+	                levels=$(cat "${run}/${seg}/Run/HyDomain.input" | grep "BaseName = IntervalB-Lev" | wc -l )
+			subdomains=$(/RQusagers/brege/SpEC/Support/bin/DomainInfo -Nsubdomains -d "${run}/${seg}/Run/HyDomain.input" -IgnoreHist)
+		else
+			levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" | grep "BaseName = IntervalB-Lev" | wc -l )
+	#		levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" | grep "BaseName = Interval-Lev" | wc -l )
+			subdomains=$(/RQusagers/brege/SpEC/Support/bin/DomainInfo -Nsubdomains -d "${run}/${seg}/Run/NextHyDomain.input" -IgnoreHist)
+		fi
 		echo -e $jobname"\t"$cores"\t"$subdomains"\t"$levels"\t"$seg"\t"$latesttime
 
 
