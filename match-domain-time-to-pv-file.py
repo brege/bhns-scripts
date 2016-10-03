@@ -3,8 +3,9 @@ import sys, os
 import numpy as np
 sys.path.insert(0,os.path.realpath(__file__+'/../../Python'))
 
-hytimes = np.loadtxt('/RQexec/brege/MicrophysicsSurvey/BHNS/tmp/hytimes.txt',delimiter=' ')
+hytimes = np.loadtxt('/RQexec/brege/MicrophysicsSurvey/BHNS/tmp/hytimes.txt',delimiter=' ',ndmin=1)
 h5time = np.loadtxt('/RQexec/brege/MicrophysicsSurvey/BHNS/tmp/h5time.txt',delimiter=' ')
+hytimes = np.loadtxt('/RQexec/brege/MicrophysicsSurvey/BHNS/tmp/hytimes.txt',delimiter=' ')
 
 #print h5time
 
