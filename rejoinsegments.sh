@@ -9,12 +9,15 @@ shopt -s nullglob
 
 lev="Lev1"
 basedir="/RQexec/brege/MicrophysicsSurvey/BHNS"
+#plbase="${basedir}/*/M1?_7-S9-*/QE/Ev-eqsym/*AMR${lev}_Plunge"
 sdbase="${basedir}/*/M1?_7-S9-*/QE/Ev-eqsym/*AMR${lev}_Plunge/${lev}_SettleDisk"
 
 echo `date`
 
+#for run in $plbase ; do 
 for run in $sdbase ; do 
 	cd $run
+#	lastseg="$(ls --ignore '*.*' --ignore '*SettleDisk' | grep ${lev}_ | sort -n | tail --lines 1)"
 	lastseg="$(ls --ignore '*.*' | grep ${lev}_ | sort -n | tail --lines 1)"
 	echo "Descending into " $run
 	if [ -d "${run}/${lastseg}/Run" ] ;
