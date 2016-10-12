@@ -25,7 +25,7 @@ while [ $# -ge 1 ] ; do
 			seg="$(ls --ignore '*.*' | grep ${lev}_ | sort -n | tail --lines 2 | head --lines 1)"
 		fi
 		jobname=$(grep -i "Jobname" "${run}/${seg}/Run/MakeSubmit.input" | awk -F" " '{print $3}')
-		cores=$(grep -i '^Cores\ =\ 192$\|^Cores\ =\ 144$\|^Cores\ =\ 96$' "${run}/${seg}/Run/MakeSubmit.input" | awk -F" " '{print $3}')
+		cores=$(grep -i 'Cores\ =\ ' "${run}/${seg}/Run/MakeSubmit.input" | awk -F" " '{print $3}' | sed -n -e '2{p;q}' )
 		latesttime=$(tail -n 1 "${run}/${seg}/Run/TStepperDiag.dat" | awk -F" " '{print $1}')
 		if [ ! -f "${run}/${seg}/Run/NextHyDomain.input" ]
 		then
