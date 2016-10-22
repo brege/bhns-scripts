@@ -29,7 +29,7 @@ for run in $sdbase ; do
 		else
 			echo "No joined data here.  Proceeding without deleting anything.."
 		fi
-		/RQusagers/brege/SpEC/Support/bin/CombineSegments.py -L 1 -o JoinedLev1 -f Constraints MatterObservers Spin_AhA.dat TStepperDiag.dat TimeInfo.dat 
+		/RQusagers/brege/SpEC/Support/bin/CombineSegments.py -L 1 -o JoinedLev1 -f Constraints MatterObservers GridAhA.dat Spin_AhA.dat TStepperDiag.dat TimeInfo.dat 
 		echo "Data successfully joined!"
 	else 
 		echo "Hmm," $run/$lastseg "hasn't run anything yet.  Skipping this for now.."
