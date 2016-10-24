@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./volumegenerater.sh SFHo/M14_7-S9-SFHo/QE/Ev-eqsym/AMRLev1_Plunge/Lev1_SettleDisk/Lev1_AB
+# ./per-segment-volume-generator.sh SFHo/M14_7-S9-SFHo/QE/Ev-eqsym/AMRLev1_Plunge/Lev1_SettleDisk/Lev1_AB
 
 set -e
 set -u

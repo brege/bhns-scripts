@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./latesttimes.sh Lev0 Lev1 Lev2
+# ./latest-times.sh Lev0 Lev1 Lev2
 
 set -e
 set -u

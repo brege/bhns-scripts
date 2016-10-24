@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./keeplastcheckpoint.sh Lev0 Lev1 Lev2
+# ./keep-last-checkpoint.sh Lev0 Lev1 Lev2
 
 set -e
 set -u

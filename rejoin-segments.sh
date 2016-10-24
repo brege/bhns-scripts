@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./rejoinsegments.sh
+# ./rejoin-segments.sh
 
 set -e
 set -u

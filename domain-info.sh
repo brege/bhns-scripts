@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./rejoinsegments.sh
+# ./domain-info.sh
 
 set -e
 set -u
