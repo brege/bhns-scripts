@@ -4,7 +4,9 @@ These scripts are used to help with monitoring several runs on a cluster.
 
 * `domain-info.sh`: Uses [SpEC](https://www.black-holes.org/SpEC.html) tool `DomainInfo` to get number of points and subdomains over time
 
-* `keep-last-checkpoint.sh`: Cleans checkpoint directories every 4 hours, but keeps the last for each segment.  I run this in a crontab.
+* `gr-domain-info.sh`: Same as above, just on the GR side
+
+* `keep-last-checkpoint.sh`: Ran in four hour crontab, this cleans checkpoint directories but keeps the last one for each segment
 
 * `latest-times.sh`: Prints a quick overview table of the simulations
 
@@ -12,8 +14,8 @@ These scripts are used to help with monitoring several runs on a cluster.
 
 ## Automating some parts of the process to visualize matter on the grid
 
-* `per-segment-volume-generator.sh`: For a specified segment from a specified run, run `ConvertToVtk` to output data in paraview format.
+* `per-segment-volume-generator.sh`: For a specified segment from a specified run, run `ConvertToVtk` to output data in paraview format
 
-* `volume-generater.sh`: Loops through all simulations and dumps latest data for paraviewing.
+* `volume-generater.sh`: Loops through all simulations and dumps latest data for paraviewing
 
 * `match-domain-time-to-pv-file.py`: simple python script to do the arithmetic that bash cannot do.  (Got all the way through the bash script before realizing this.  Would recommend going back and doing this in python instead.)
