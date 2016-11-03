@@ -19,8 +19,8 @@ for run in $sdbase ; do
 	
 	#echo `date`
 	echo "Descending into " $run
-	echo "#[1] Time" 1>> $datfile
-	echo "#[2] Number of Cores" 1>> $datfile
+        echo "#[1] Time" 1> $datfile # overwrites an existing file with this one line
+        echo "#[2] Number of Cores" 1>> $datfile # appends to it hereafter
 	echo "#[3] Number of Hydro AMR Subdomains" 1>> $datfile
 	echo "#[4] Total number of points on the FD grid" 1>> $datfile
 
