@@ -20,9 +20,9 @@ for run in $sdbase ; do
 	echo "Descending into " $run
 	echo "#[1] Time" 1> $datfile # overwrites an existing file with this one line
 	echo "#[2] Number of Cores" 1>> $datfile # appends to it hereafter
-	echo "#[3] Number of Hydro AMR Subdomains" 1>> $datfile
-	echo "#[4] Total number of points on the FD grid" 1>> $datfile
-	echo "#[5] Number of points on the largest subdomains" 1>> $datfile
+	echo "#[3] Number of Spectral Subdomains" 1>> $datfile
+	echo "#[4] Total number of points on the GR grid" 1>> $datfile
+	echo "#[5] Number of points on the largest subdomain" 1>> $datfile
 
 	segs="$(ls --ignore '*.*' | grep ${lev}_ | sort -n )"
 
