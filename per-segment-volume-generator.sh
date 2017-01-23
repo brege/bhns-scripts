@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./per-segment-volume-generator.sh SFHo/M14_7-S9-SFHo/QE/Ev-eqsym/AMRLev1_Plunge/Lev1_SettleDisk/Lev1_AB
+# ./per-segment-volume-generator.sh /RQexec/brege/MicrophysicsSurvey/BHNS/FSU21/M12_7-S9-FSU21/QE/Ev-eqsym/AMRLev1_Plunge/Lev1_SettleDisk/Lev0_BM 
 
 set -e
 set -u
@@ -9,8 +9,8 @@ shopt -s nullglob
 
 while [ $# -ge 1 ] ; do
         spath=$1
-        basedir="/RQexec/brege/MicrophysicsSurvey/BHNS"
-        sdbase="${basedir}/${spath}"
+        basedir="/RQexec/brege/MicrophysicsSurvey/BHNS" # CHANGE_ME
+        sdbase="${spath}"
         shift
 
 	echo `date`
@@ -41,6 +41,10 @@ while [ $# -ge 1 ] ; do
 			hytimes=$(ls ${run}/Run/HyDomainAtTime*.txt | awk -F"    " '{print $2}' | awk -F".txt" '{print $1}')
 #			echo "The domain times are: " $hytimes
 
+			if [ ! -d "${basedir}/tmp/" ]
+			then
+				mkdir -p "${basedir}/tmp/"
+			fi
 			echo $h5time 1> "${basedir}/tmp/h5time.txt"
 			echo $hytimes 1> "${basedir}/tmp/hytimes.txt"
 
