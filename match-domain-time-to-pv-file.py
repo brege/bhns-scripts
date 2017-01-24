@@ -3,6 +3,7 @@ import sys, os
 import numpy as np
 sys.path.insert(0,os.path.realpath(__file__+'/../../Python'))
 
+# CHANGE_ME: should be same as ${basedir}/tmp/...
 hytimes = np.loadtxt('/RQexec/brege/MicrophysicsSurvey/BHNS/tmp/hytimes.txt',delimiter=' ',ndmin=1)
 h5time = np.loadtxt('/RQexec/brege/MicrophysicsSurvey/BHNS/tmp/h5time.txt',delimiter=' ')
 
@@ -20,4 +21,4 @@ for t in range(len(hytimes)):
 
 for t in range(len(hytimes)):
     if abs(hytimes[t] - h5time)-biggest < tol and hytimes[t] - h5time < 0.:
-        print('%.8f' % hytimes[t])
+        print(hytimes[t])
