@@ -36,7 +36,7 @@ while [ $# -ge 1 ] ; do
 
 			lasth5=$(ls -tr ${vmdir}/Vars_Interval*.h5 | tail --lines 1)
 			echo "Latest written H5 file is: " $lasth5
-			h5time=$(/RQusagers/brege/SpEC/Support/bin/TimesInH5File ${lasth5} | awk -F" " '{print $4}'  | tail --lines 1) 
+			h5time=$(TimesInH5File ${lasth5} | awk -F" " '{print $4}'  | tail --lines 1) 
 #			echo "The latest time is: " $h5time
 			hytimes=$(ls ${run}/Run/HyDomainAtTime*.txt | awk -F"    " '{print $2}' | awk -F".txt" '{print $1}')
 #			echo "The domain times are: " $hytimes
