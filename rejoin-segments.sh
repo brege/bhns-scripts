@@ -41,12 +41,22 @@ for run in $sdbase ; do
 			then 
 				echo "Overwriting old joined data since the directory already exists.."
 			#	rm -r ./JoinedLev1/
-				/RQusagers/brege/SpEC/Support/bin/CombineSegments.py -e dat -L $level -o "JoinedLev${level}-tmp" -f Constraints MatterObservers ApparentHorizon TStepperDiag.dat TimeInfo.dat MemoryInfo.dat
+				CombineSegments.py -e dat \
+                                                   -L $level \
+                                                   -o "JoinedLev${level}-tmp" \
+                                                   -f Constraints MatterObservers \
+                                                      ApparentHorizon TStepperDiag.dat \
+                                                      TimeInfo.dat MemoryInfo.dat
 				cp -r "JoinedLev${level}-tmp/"* "JoinedLev${level}/"
 				rm -r "./JoinedLev${level}-tmp/"
 			else
 				echo "No joined data here.  Proceeding without overwriting anything.."
-				/RQusagers/brege/SpEC/Support/bin/CombineSegments.py -e dat -L $level -o "JoinedLev${level}" -f Constraints MatterObservers ApparentHorizon TStepperDiag.dat TimeInfo.dat MemoryInfo.dat 
+				CombineSegments.py -e dat \
+                                                   -L $level \
+                                                   -o "JoinedLev${level}" \
+                                                   -f Constraints MatterObservers \
+                                                      ApparentHorizon TStepperDiag.dat \
+                                                      TimeInfo.dat MemoryInfo.dat 
 			fi
 			echo "Data successfully joined!"
 		else 
