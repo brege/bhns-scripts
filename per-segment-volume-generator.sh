@@ -6,11 +6,11 @@
 set -e
 set -u
 shopt -s nullglob
+source ./paths.conf
 
 while [ $# -ge 1 ] ; do
-        spath=$1
-        basedir="/RQexec/brege/MicrophysicsSurvey/BHNS" # CHANGE_ME
-        sdbase="${spath}"
+#        basedir="/RQexec/brege/MicrophysicsSurvey/BHNS" # CHANGE_ME
+        sdbase=$1
         shift
 
 	echo `date`
@@ -24,7 +24,9 @@ while [ $# -ge 1 ] ; do
 		then
 
 			echo "Candidate vmdir is: " $vmdir
-			lastH5="$(ls ${vmdir} | grep -i "Vars_Interval" | tail --line 1)"
+			lastH5="$(ls ${vmdir} \
+                                  | grep -i "Vars_Interval" \
+                                  | tail --line 1)"
 			echo $lastH5
 			h=1
 			while [ ! -f $vmdir/$lastH5 ] ;
@@ -36,9 +38,13 @@ while [ $# -ge 1 ] ; do
 
 			lasth5=$(ls -tr ${vmdir}/Vars_Interval*.h5 | tail --lines 1)
 			echo "Latest written H5 file is: " $lasth5
-			h5time=$(TimesInH5File ${lasth5} | awk -F" " '{print $4}'  | tail --lines 1) 
+			h5time=$(TimesInH5File ${lasth5} \
+                                 | awk -F" " '{print $4}' \
+                                 | tail --lines 1) 
 #			echo "The latest time is: " $h5time
-			hytimes=$(ls ${run}/Run/HyDomainAtTime*.txt | awk -F"    " '{print $2}' | awk -F".txt" '{print $1}')
+			hytimes=$(ls ${run}/Run/HyDomainAtTime*.txt \
+                                  | awk -F"    " '{print $2}' \
+                                  | awk -F".txt" '{print $1}')
 #			echo "The domain times are: " $hytimes
 
 			if [ ! -d "${basedir}/tmp/" ]
@@ -47,7 +53,8 @@ while [ $# -ge 1 ] ; do
 			fi
 			echo $h5time 1> "${basedir}/tmp/h5time.txt"
 			echo $hytimes 1> "${basedir}/tmp/hytimes.txt"
-
+			
+			export basedir
 			hytime=$(python $basedir/scripts/"match-domain-time-to-pv-file.py")
 			echo "h5time is: " $h5time
 			echo "hytime is: " $hytime
