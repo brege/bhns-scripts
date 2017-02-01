@@ -8,8 +8,9 @@ set -u
 shopt -s nullglob
 
 lev="Lev1"
-basedir="/RQexec/brege/MicrophysicsSurvey/BHNS"
-sdbase="${basedir}/*/M1?_7-S9-*/QE/Ev-eqsym/*AMR${lev}_Plunge/${lev}_SettleDisk"
+#basedir="/RQexec/brege/MicrophysicsSurvey/BHNS"
+#sdbase="${basedir}/*/M1?_7-S9-*/QE/Ev-eqsym/*AMR${lev}_Plunge/${lev}_SettleDisk"
+source ./paths.conf
 
 for run in $sdbase ; do
 	cd $run
