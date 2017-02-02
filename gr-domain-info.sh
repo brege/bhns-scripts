@@ -16,7 +16,7 @@ for run in $sdbase ; do
 	cd $run
 	levs="0 1 5"
 
-        for levels in $levs ; do
+	for levels in $levs ; do
 
 		datfile="${run}/JoinedLev${levels}/GrDomainInfo.dat"
 
@@ -37,17 +37,17 @@ for run in $sdbase ; do
 		segs="$(ls --ignore '*.*' | grep "Lev${levels}_" | sort -n )"
 
 		for seg in $segs ; do 
-		        echo "#${seg}" 1>> $datfile
+			echo "#${seg}" 1>> $datfile
 	
 			cores=$(grep -i 'Cores\ =\ ' "${run}/${seg}/Run/MakeSubmit.input" \
-				| awk -F" " '{print $3}' \
-				| sed -n -e '2{p;q}' )	
+					| awk -F" " '{print $3}' \
+					| sed -n -e '2{p;q}' )	
 	
-		        if [ -f "${run}/${seg}/Run/TStepperDiag.dat" ]
+			if [ -f "${run}/${seg}/Run/TStepperDiag.dat" ]
 			then
 				hdt=$(head -12 "${run}/${seg}/Run/TStepperDiag.dat" \
 					| tail -1 \
-					| awk -F"    " '{print $1}' \
+					| awk -F"	 " '{print $1}' \
 					| awk -F"  " '{print $2}')
 				tp=$(DomainInfo -d "${run}/${seg}/Run/GrDomain.input" \
 					-UseLatestTime -Npoints \

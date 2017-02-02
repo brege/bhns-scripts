@@ -18,15 +18,15 @@ for run in $sdbase ; do
 	cd $run
 	echo "Descending into " $run
 #	lastseg="$(ls --ignore '*.*' --ignore '*SettleDisk' | grep ${lev}_ | sort -n | tail --lines 1)"
-        levs="0 1 5"
-        for level in $levs; do
+	levs="0 1 5"
+	for level in $levs; do
 		lastseg="$(ls --ignore '*.*' | grep "Lev${level}_" | sort -n | tail --lines 1)"
 
-                if [ ! -d "${lastseg}" ] ;
-                then
-                        echo "no available Lev${level} directory here, skipping.."
-                        continue
-                fi
+		if [ ! -d "${lastseg}" ] ;
+		then
+			echo "no available Lev${level} directory here, skipping.."
+			continue
+		fi
 
 		if [ -d "${run}/${lastseg}/Run" ] ;
 		then
@@ -42,21 +42,21 @@ for run in $sdbase ; do
 				echo "Overwriting old joined data since the directory already exists.."
 			#	rm -r ./JoinedLev1/
 				CombineSegments.py -e dat \
-                                                   -L $level \
-                                                   -o "JoinedLev${level}-tmp" \
-                                                   -f Constraints MatterObservers \
-                                                      ApparentHorizon TStepperDiag.dat \
-                                                      TimeInfo.dat MemoryInfo.dat
+								   -L $level \
+								   -o "JoinedLev${level}-tmp" \
+								   -f Constraints MatterObservers \
+									  ApparentHorizon TStepperDiag.dat \
+									  TimeInfo.dat MemoryInfo.dat
 				cp -r "JoinedLev${level}-tmp/"* "JoinedLev${level}/"
 				rm -r "./JoinedLev${level}-tmp/"
 			else
-				echo "No joined data here.  Proceeding without overwriting anything.."
+				echo "No joined data here.	Proceeding without overwriting anything.."
 				CombineSegments.py -e dat \
-                                                   -L $level \
-                                                   -o "JoinedLev${level}" \
-                                                   -f Constraints MatterObservers \
-                                                      ApparentHorizon TStepperDiag.dat \
-                                                      TimeInfo.dat MemoryInfo.dat 
+								   -L $level \
+								   -o "JoinedLev${level}" \
+								   -f Constraints MatterObservers \
+									  ApparentHorizon TStepperDiag.dat \
+									  TimeInfo.dat MemoryInfo.dat 
 			fi
 			echo "Data successfully joined!"
 		else 

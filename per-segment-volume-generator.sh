@@ -9,9 +9,9 @@ shopt -s nullglob
 source ./paths.conf
 
 while [ $# -ge 1 ] ; do
-#        basedir="/RQexec/brege/MicrophysicsSurvey/BHNS" # CHANGE_ME
-        sdbase=$1
-        shift
+#	basedir="/RQexec/brege/MicrophysicsSurvey/BHNS" # CHANGE_ME
+	sdbase=$1
+	shift
 
 	echo `date`
 	for run in $sdbase ; do
@@ -25,8 +25,8 @@ while [ $# -ge 1 ] ; do
 
 			echo "Candidate vmdir is: " $vmdir
 			lastH5="$(ls ${vmdir} \
-                                  | grep -i "Vars_Interval" \
-                                  | tail --line 1)"
+					  | grep -i "Vars_Interval" \
+					  | tail --line 1)"
 			echo $lastH5
 			h=1
 			while [ ! -f $vmdir/$lastH5 ] ;
@@ -39,12 +39,12 @@ while [ $# -ge 1 ] ; do
 			lasth5=$(ls -tr ${vmdir}/Vars_Interval*.h5 | tail --lines 1)
 			echo "Latest written H5 file is: " $lasth5
 			h5time=$(TimesInH5File ${lasth5} \
-                                 | awk -F" " '{print $4}' \
-                                 | tail --lines 1) 
+					 | awk -F" " '{print $4}' \
+					 | tail --lines 1) 
 #			echo "The latest time is: " $h5time
 			hytimes=$(ls ${run}/Run/HyDomainAtTime*.txt \
-                                  | awk -F"    " '{print $2}' \
-                                  | awk -F".txt" '{print $1}')
+					  | awk -F"    " '{print $2}' \
+					  | awk -F".txt" '{print $1}')
 #			echo "The domain times are: " $hytimes
 
 			if [ ! -d "${basedir}/tmp/" ]
@@ -66,31 +66,31 @@ while [ $# -ge 1 ] ; do
 			echo " "  
 
 			jobname=$(grep -i "Jobname" "${run}/Run/MakeSubmit.input" | awk -F" " '{print $3}')
-                        seg=$(basename $run)
+			seg=$(basename $run)
 			echo $seg
 			vizdir="${basedir}/viz/${jobname}/${seg}"
 			if [ ! -d "${vizdir}" ]
 			then
 				mkdir -p "${vizdir}"
 				echo "created viz directory: " $vizdir
-			        ApplyObservers \
-			        -h5prefix Vars \
-			        -UseTimes $h5time \
-			        -NoDomainHistory \
-			        -domaindir "${run}/Run" \
-			        -domaininput "HyDomainAtTime-    ${hytime}.txt" \
-			        -outputdir "${basedir}/viz/${jobname}/${seg}" \
-			        -c "Subdomain(Items=ReadTensorFromDisk(Input=Rho0Phys;Time=${h5time};DeltaT=0.1;Dim=3;Dir=${run}/Run/VolumeMatterData/;RankSymm=;Output=Rho0Phys;H5FilePrefix=Vars;),ReadTensorFromDisk(Input=Temp;Time=${h5time};DeltaT=0.1;Dim=3;Dir=${run}/Run/VolumeMatterData/;RankSymm=;Output=Temp;H5FilePrefix=Vars;),)" \
-			        -o "ConvertToVtk(Input=Rho0Phys,Temp; Basename=${h5time}_paraviewdata)"
+				ApplyObservers \
+					-h5prefix Vars \
+					-UseTimes $h5time \
+					-NoDomainHistory \
+					-domaindir "${run}/Run" \
+					-domaininput "HyDomainAtTime-    ${hytime}.txt" \
+					-outputdir "${basedir}/viz/${jobname}/${seg}" \
+					-c "Subdomain(Items=ReadTensorFromDisk(Input=Rho0Phys;Time=${h5time};DeltaT=0.1;Dim=3;Dir=${run}/Run/VolumeMatterData/;RankSymm=;Output=Rho0Phys;H5FilePrefix=Vars;),ReadTensorFromDisk(Input=Temp;Time=${h5time};DeltaT=0.1;Dim=3;Dir=${run}/Run/VolumeMatterData/;RankSymm=;Output=Temp;H5FilePrefix=Vars;),)" \
+					-o "ConvertToVtk(Input=Rho0Phys,Temp; Basename=${h5time}_paraviewdata)"
 				echo "new paraview data extracted in ${basedir}/viz/${jobname}/${seg}/${h5time}_paraviewdata"
 			else
-			        echo "Viz directory already exists!: " $vizdir
+				echo "Viz directory already exists!: " $vizdir
 			fi
 
 			IFS=$OLDIFS
 
-                        rm "${basedir}/tmp/h5time.txt"
-                        rm "${basedir}/tmp/hytimes.txt"
+			rm "${basedir}/tmp/h5time.txt"
+			rm "${basedir}/tmp/hytimes.txt"
 
 		fi
 	done
