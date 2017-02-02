@@ -14,7 +14,7 @@ source ./paths.conf
 
 for run in $sdbase ; do
 	cd $run
-	levs="0 1 5"
+	#levs="0 1 5"
 
 	for levels in $levs ; do
 

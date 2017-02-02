@@ -18,7 +18,7 @@ for run in $sdbase ; do
 	cd $run
 	echo "Descending into " $run
 #	lastseg="$(ls --ignore '*.*' --ignore '*SettleDisk' | grep ${lev}_ | sort -n | tail --lines 1)"
-	levs="0 1 5"
+	#levs="0 1 5"
 	for level in $levs; do
 		lastseg="$(ls --ignore '*.*' | grep "Lev${level}_" | sort -n | tail --lines 1)"
 

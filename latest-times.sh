@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./latest-times.sh Lev0 Lev1 Lev2
+# ./latest-times.sh
 
 set -e
 set -u
@@ -17,20 +17,20 @@ echo -e "Simulation\tCores\tSubds\tLevels\tSegment\tTime"
 
 for run in $sdbase ; do 
 	cd $run
-	levs="0 1 5"
+	# set levs="0 1 2" e.g. in ./paths.conf
 	for level in $levs; do
 
 		lastseg="$(ls --ignore '*.*' | grep "Lev${level}_" | sort -n | tail --lines 1)"
-			if [ ! -d "${lastseg}" ] ;
-			then
-#				 echo "no available Lev${level} directory here, skipping.."
-				continue
-			fi
+		if [ ! -d "${lastseg}" ] ;
+		then
+#			 echo "no available Lev${level} directory here, skipping.."
+			continue
+		fi
 
-			seg="$(ls --ignore '*.*' \
-				   | grep "Lev${level}_" \
-				   | sort -n \
-				   | tail --lines 1)"
+		seg="$(ls --ignore '*.*' \
+			   | grep "Lev${level}_" \
+			   | sort -n \
+			   | tail --lines 1)"
 		if [ ! -f "${run}/${seg}/Run/TStepperDiag.dat" ] ;
 		then
 			seg="$(ls --ignore '*.*' \
