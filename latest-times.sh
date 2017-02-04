@@ -7,9 +7,6 @@ set -e
 set -u
 shopt -s nullglob
 
-#basedir="/RQexec/brege/MicrophysicsSurvey/BHNS"
-#sdbase="${basedir}/*/M1?_7-S9-*/QE/Ev-eqsym/*AMRLev1_Plunge/Lev?_SettleDisk"
-#sdbase="${basedir}/*/M1?_7-S9-*/QE/Ev-eqsym/*AMR${lev}_Plunge/"
 source ./paths.conf
 
 echo `date`
@@ -23,7 +20,6 @@ for run in $sdbase ; do
 		lastseg="$(ls --ignore '*.*' | grep "Lev${level}_" | sort -n | tail --lines 1)"
 		if [ ! -d "${lastseg}" ] ;
 		then
-#			 echo "no available Lev${level} directory here, skipping.."
 			continue
 		fi
 
@@ -31,6 +27,7 @@ for run in $sdbase ; do
 			   | grep "Lev${level}_" \
 			   | sort -n \
 			   | tail --lines 1)"
+
 		if [ ! -f "${run}/${seg}/Run/TStepperDiag.dat" ] ;
 		then
 			seg="$(ls --ignore '*.*' \
@@ -51,18 +48,15 @@ for run in $sdbase ; do
 		if [ ! -f "${run}/${seg}/Run/NextHyDomain.input" ]
 		then
 			levels=$(cat "${run}/${seg}/Run/HyDomain.input" \
-					 | grep "BaseName = IntervalB-Lev" \
+					 | grep -F "BaseName = Interval.-Lev BaseName = Interval-Lev" \
 					 | wc -l )
 			subdomains=$(DomainInfo -Nsubdomains \
 									-d "${run}/${seg}/Run/HyDomain.input" \
 									-IgnoreHist)
 		else
 			levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" \
-					 | grep "BaseName = IntervalB-Lev" \
+					 | grep -F "BaseName = Interval.-Lev BaseName = Interval-Lev" \
 					 | wc -l )
-#			levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" \
-#								 | grep "BaseName = Interval-Lev" \
-#								 | wc -l )
 			subdomains=$(DomainInfo -Nsubdomains \
 									 -d "${run}/${seg}/Run/NextHyDomain.input" \
 									 -IgnoreHist)

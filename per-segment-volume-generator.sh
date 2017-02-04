@@ -9,7 +9,6 @@ shopt -s nullglob
 source ./paths.conf
 
 while [ $# -ge 1 ] ; do
-#	basedir="/RQexec/brege/MicrophysicsSurvey/BHNS" # CHANGE_ME
 	sdbase=$1
 	shift
 

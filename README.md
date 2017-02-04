@@ -24,6 +24,6 @@ These scripts are used to help with monitoring several runs on a cluster.
 
 * `per-segment-volume-generator.sh`: For a specified segment from a specified run, run `ConvertToVtk` to output data in paraview format
 
-* `volume-generater.sh`: Loops through all simulations and dumps latest data for paraviewing
+* `volume-generater.sh`: Loops through all simulations and dumps latest data for paraviewing.  You must specify the level to output, e.g. `volume-generater.sh Lev1`.  If you add many levels, this command may take a long time
 
 * `match-domain-time-to-pv-file.py`: simple python script to do the arithmetic that bash cannot do.  (Got all the way through the bash script before realizing this.  Would recommend going back and doing this in python instead.)

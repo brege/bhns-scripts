@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./volume-generator.sh
+# ./volume-generator.sh Lev1 Lev5
 
 set -e
 set -u
@@ -10,9 +10,6 @@ source ./paths.conf
 
 while [ $# -ge 1 ] ; do
 	lev=$1
-#	lev="Lev1"
-#	basedir="/RQexec/brege/MicrophysicsSurvey/BHNS"
-#	sdbase="${basedir}/*/M1?_7-S9-*/QE/Ev-eqsym/*AMR${lev}_Plunge/${lev}_SettleDisk"
 		
 	shift
 
