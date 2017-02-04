@@ -1,5 +1,13 @@
 These scripts are used to help with monitoring several runs on a cluster.
 
+## Before you begin
+
+1. `git clone git://github.com/brege/bhns-scripts.git`
+
+2. `cp sample.conf paths.conf`
+
+3. Edit `paths.conf` to provide simulation paths
+
 ## Monitoring .dat files
 
 * `domain-info.sh`: Uses [SpEC](https://www.black-holes.org/SpEC.html) tool `DomainInfo` to get number of points and subdomains over time

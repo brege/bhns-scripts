@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./domain-info.sh
+# ./gr-domain-info.sh
 
 set -e
 set -u

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# ./volume-generator.sh Lev0 Lev1 Lev2
+# ./volume-generator.sh
 
 set -e
 set -u
