@@ -6,19 +6,14 @@
 set -e
 set -u
 shopt -s nullglob
+source ./paths.conf
 
 lev="Lev1"
-basedir="/RQexec/brege/MicrophysicsSurvey/BHNS"
-#plbase="${basedir}/*/M1?_7-S9-*/QE/Ev-eqsym/*AMR${lev}_Plunge"
-sdbase="${basedir}/*/M1?_7-S9-*/QE/Ev-eqsym/*AMR${lev}_Plunge/${lev}_SettleDisk"
 echo `date`
 
-#for run in $plbase ; do 
 for run in $sdbase ; do 
 	cd $run
 	echo "Descending into " $run
-#	lastseg="$(ls --ignore '*.*' --ignore '*SettleDisk' | grep ${lev}_ | sort -n | tail --lines 1)"
-	#levs="0 1 5"
 	for level in $levs; do
 		lastseg="$(ls --ignore '*.*' | grep "Lev${level}_" | sort -n | tail --lines 1)"
 
