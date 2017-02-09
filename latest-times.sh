@@ -43,7 +43,7 @@ for run in $sdbase ; do
 					| awk -F" " '{print $3}' \
 					| sed -n -e '2{p;q}' )
 		latesttime=$(tail -n 1 "${run}/${seg}/Run/TStepperDiag.dat" \
-					 | awk -F" " '{print $1}')
+					| awk -F" " '{print $1}')
 
 		if [ ! -f "${run}/${seg}/Run/NextHyDomain.input" ]
 		then
