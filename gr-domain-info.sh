@@ -30,6 +30,7 @@ for run in $sdbase ; do
 		echo "#[3] Number of Spectral Subdomains" 1>> $datfile
 		echo "#[4] Total number of points on the GR grid" 1>> $datfile
 		echo "#[5] Number of points on the largest subdomain" 1>> $datfile
+		echo "#[6] Grid spacing of finest grid" 1>> $datfile
 
 		segs="$(ls --ignore '*.*' | grep "Lev${levels}_" | sort -n )"
 
@@ -42,9 +43,8 @@ for run in $sdbase ; do
 	
 			if [ -f "${run}/${seg}/Run/TStepperDiag.dat" ]
 			then
-				hdt=$(head -12 "${run}/${seg}/Run/TStepperDiag.dat" \
-					| tail -1 \
-					| awk -F"	 " '{print $1}' \
+				hdt=$(tail -1 "${run}/${seg}/Run/TStepperDiag.dat" \
+					| awk -F"    " '{print $1}' \
 					| awk -F"  " '{print $2}')
 				tp=$(DomainInfo -d "${run}/${seg}/Run/GrDomain.input" \
 					-UseLatestTime -Npoints \
@@ -55,8 +55,16 @@ for run in $sdbase ; do
 					| awk -F"," '{print $1}')
 				Nsubdomains=$(DomainInfo -d "${run}/${seg}/Run/GrDomain.input" \
 					-Nsubdomains -IgnoreHist)
-
-				echo $hdt $cores $Nsubdomains $Npoints $WorstSd 1>> $datfile
+				dx=$(DomainInfo -d "${run}/${seg}/Run/GrDomain.input" \
+					--dxmin \
+					--UseLatestTime \
+					| head -6 \
+					| tail -1 )
+				dxmin=$(echo $dx \
+					| awk -F" " '{print $1}' \
+					| awk -F"=" '{print $2}')
+				
+				echo $hdt $cores $Nsubdomains $Npoints $WorstSd $dxmin>> $datfile
 			fi
 		done
 	done
