@@ -12,7 +12,6 @@ source ./paths.conf
 
 for run in $sdbase ; do
 	cd $run
-	#levs="0 1 5"
 
 	for levels in $levs ; do
 		datfile="${run}/JoinedLev${levels}/DomainInfo.dat"
@@ -39,8 +38,8 @@ for run in $sdbase ; do
 
 			if [ -f "${run}/${seg}/Run/TStepperDiag.dat" ]
 			then
-				hdtimes=$(ls ${run}/${seg}/Run/HyDomainAtTime*.txt \
-						| awk -F"	 " '{print $2}' \
+				hdtimes=$(ls "${run}/${seg}/Run/"HyDomainAtTime*.txt \
+						| awk -F"    " '{print $2}' \
 						| awk -F".txt" '{print $1}')
 				for hdt in $hdtimes ; do
 					di=$(DomainInfo -d="${run}/${seg}/Run/HyDomainAtTime-    ${hdt}.txt" \
