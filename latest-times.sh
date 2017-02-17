@@ -48,14 +48,14 @@ for run in $sdbase ; do
 		if [ ! -f "${run}/${seg}/Run/NextHyDomain.input" ]
 		then
 			levels=$(cat "${run}/${seg}/Run/HyDomain.input" \
-					 | grep -F "BaseName = Interval.-Lev BaseName = Interval-Lev" \
+					 | grep -E "BaseName = Interval.-Lev|BaseName = Interval-Lev" \
 					 | wc -l )
 			subdomains=$(DomainInfo -Nsubdomains \
 									-d "${run}/${seg}/Run/HyDomain.input" \
 									-IgnoreHist)
 		else
 			levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" \
-					 | grep -F "BaseName = Interval.-Lev BaseName = Interval-Lev" \
+					 | grep -E "BaseName = Interval.-Lev|BaseName = Interval-Lev" \
 					 | wc -l )
 			subdomains=$(DomainInfo -Nsubdomains \
 									 -d "${run}/${seg}/Run/NextHyDomain.input" \
