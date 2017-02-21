@@ -54,7 +54,7 @@ while [ $# -ge 1 ] ; do
 			echo $hytimes 1> "${basedir}/tmp/hytimes.txt"
 			
 			export basedir
-			hytime=$(python $basedir/scripts/"match-domain-time-to-pv-file.py")
+			hytime=$(python "${basedir}/scripts/match-domain-time-to-pv-file.py")
 			echo "h5time is: " $h5time
 			echo "hytime is: " $hytime
 
