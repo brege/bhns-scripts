@@ -17,21 +17,21 @@ for run in $sdbase ; do
 	# set levs="0 1 2" e.g. in ./paths.conf
 	for level in $levs; do
 
-		lastseg="$(ls --ignore '*.*' | grep "Lev${level}_" | sort -n | tail --lines 1)"
+		lastseg="$(ls --ignore '*.*' | grep -E "Lev${level}_[A-Z]{2,3}" | sort -n | tail --lines 1)"
 		if [ ! -d "${lastseg}" ] ;
 		then
 			continue
 		fi
 
 		seg="$(ls --ignore '*.*' \
-			   | grep "Lev${level}_" \
+			   | grep -E "Lev${level}_[A-Z]{2,3}" \
 			   | sort -n \
 			   | tail --lines 1)"
 
 		if [ ! -f "${run}/${seg}/Run/TStepperDiag.dat" ] ;
 		then
 			seg="$(ls --ignore '*.*' \
-				   | grep "Lev${level}_" \
+				   | grep -E "Lev${level}_[A-Z]{2,3}" \
 				   | sort -n \
 				   | tail --lines 2 \
 				   | head --lines 1)"
@@ -45,7 +45,7 @@ for run in $sdbase ; do
 		latesttime=$(tail -n 1 "${run}/${seg}/Run/TStepperDiag.dat" \
 					| awk -F" " '{print $1}')
 
-		if [ ! -f "${run}/${seg}/Run/NextHyDomain.input" ]
+		if [ ! -f "${run}/${seg}/Run/NextHyDomain.{in,out}put" ]
 		then
 			levels=$(cat "${run}/${seg}/Run/HyDomain.input" \
 					 | grep -E "BaseName = Interval.-Lev|BaseName = Interval-Lev" \
@@ -54,11 +54,11 @@ for run in $sdbase ; do
 									-d "${run}/${seg}/Run/HyDomain.input" \
 									-IgnoreHist)
 		else
-			levels=$(cat "${run}/${seg}/Run/NextHyDomain.input" \
+			levels=$(cat "${run}/${seg}/Run/NextHyDomain.{in,out}put" \
 					 | grep -E "BaseName = Interval.-Lev|BaseName = Interval-Lev" \
 					 | wc -l )
 			subdomains=$(DomainInfo -Nsubdomains \
-									 -d "${run}/${seg}/Run/NextHyDomain.input" \
+									 -d "${run}/${seg}/Run/NextHyDomain.{in,out}put" \
 									 -IgnoreHist)
 		fi
 

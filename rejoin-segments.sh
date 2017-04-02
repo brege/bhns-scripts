@@ -8,14 +8,13 @@ set -u
 shopt -s nullglob
 source ./paths.conf
 
-lev="Lev1"
 echo `date`
 
 for run in $sdbase ; do 
 	cd $run
 	echo "Descending into " $run
 	for level in $levs; do
-		lastseg="$(ls --ignore '*.*' | grep "Lev${level}_" | sort -n | tail --lines 1)"
+		lastseg="$(ls --ignore '*.*' | grep -E "Lev${level}_[A-Z]{2,3}" | sort -n | tail --lines 1)"
 
 		if [ ! -d "${lastseg}" ] ;
 		then

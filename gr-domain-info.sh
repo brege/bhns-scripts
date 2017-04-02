@@ -32,7 +32,7 @@ for run in $sdbase ; do
 		echo "#[5] Number of points on the largest subdomain" 1>> $datfile
 		echo "#[6] Grid spacing of finest grid" 1>> $datfile
 
-		segs="$(ls --ignore '*.*' | grep "Lev${levels}_" | sort -n )"
+		segs="$(ls --ignore '*.*' | grep -E "Lev${levels}_[A-Z]{2,3}" | sort -n )"
 
 		for seg in $segs ; do 
 			echo "#${seg}" 1>> $datfile

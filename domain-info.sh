@@ -28,7 +28,7 @@ for run in $sdbase ; do
 		echo "#[3] Number of Hydro AMR Subdomains" 1>> $datfile
 		echo "#[4] Total number of points on the FD grid" 1>> $datfile
 
-		segs="$(ls --ignore '*.*' | grep "Lev${levels}_" | sort -n )"
+		segs="$(ls --ignore '*.*' | grep -E "Lev${levels}_[A-Z]{2,3}" | sort -n )"
 
 		for seg in $segs ; do 
 			echo "#${seg}" 1>> $datfile
