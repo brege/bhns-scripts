@@ -30,11 +30,16 @@ for run in $sdbase ; do
 
 		if [ ! -f "${run}/${seg}/Run/TStepperDiag.dat" ] ;
 		then
-			seg="$(ls --ignore '*.*' \
-				   | grep -E "Lev${level}_[A-Z]{2,3}" \
-				   | sort -n \
-				   | tail --lines 2 \
-				   | head --lines 1)"
+			if [ ! -f "${run}/${seg}/Run/HyDomain.input" ]
+			then 
+				continue
+			else
+				seg="$(ls --ignore '*.*' \
+					   | grep -E "Lev${level}_[A-Z]{2,3}" \
+					   | sort -n \
+					   | tail --lines 2 \
+					   | head --lines 1)"
+			fi
 		fi
 
 		jobname=$(grep -i "Jobname" "${run}/${seg}/Run/MakeSubmit.input" \
