@@ -17,29 +17,25 @@ for run in $sdbase ; do
 	# set levs="0 1 2" e.g. in ./paths.conf
 	for level in $levs; do
 
-		lastseg="$(ls --ignore '*.*' | grep -E "Lev${level}_[A-Z]{2,3}" | sort -n | tail --lines 1)"
-		if [ ! -d "${lastseg}" ] ;
+		seg="$(ls  --ignore "*.*" \
+				| grep -E "Lev${level}_[A-Z]{2,3}" \
+				| sort -n \
+				| tail --lines 1)"
+
+		if [ -d "${seg}" ]
 		then
+			h=1
+			while [ ! -f "${run}/${seg}/Run/TStepperDiag.dat" ] ;
+			do
+				h=$((h+1))
+				seg="$(ls --ignore "*.*" \
+						| grep -E "Lev${level}_[A-Z]{2,3}" \
+						| sort -n \
+						| tail --lines $h \
+						| head --lines 1)"
+			done
+		else
 			continue
-		fi
-
-		seg="$(ls --ignore '*.*' \
-			   | grep -E "Lev${level}_[A-Z]{2,3}" \
-			   | sort -n \
-			   | tail --lines 1)"
-
-		if [ ! -f "${run}/${seg}/Run/TStepperDiag.dat" ] ;
-		then
-			if [ ! -f "${run}/${seg}/Run/HyDomain.input" ]
-			then 
-				continue
-			else
-				seg="$(ls --ignore '*.*' \
-					   | grep -E "Lev${level}_[A-Z]{2,3}" \
-					   | sort -n \
-					   | tail --lines 2 \
-					   | head --lines 1)"
-			fi
 		fi
 
 		jobname=$(grep -i "Jobname" "${run}/${seg}/Run/MakeSubmit.input" \
@@ -68,7 +64,6 @@ for run in $sdbase ; do
 		fi
 
 		echo -e $jobname"\t"$cores"\t"$subdomains"\t"$levels"\t"$seg"\t"$latesttime
-
 
 	done
 
