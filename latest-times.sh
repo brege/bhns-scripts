@@ -9,8 +9,7 @@ shopt -s nullglob
 
 source ./paths.conf
 
-echo `date`
-echo -e "Simulation\tCores\tSubds\tLevels\tSegment\tTime"
+echo -e "Simulation\tCores\tSubds\tLevels\tdT/dt\tTime\t\t\tSegment"
 
 for run in $sdbase ; do 
 	cd $run
@@ -45,6 +44,8 @@ for run in $sdbase ; do
 					| sed -n -e '2{p;q}' )
 		latesttime=$(tail -n 1 "${run}/${seg}/Run/TStepperDiag.dat" \
 					| awk -F" " '{print $1}')
+		performance=$(tail -n 1 "${run}/${seg}/Run/TimeInfo.dat" \
+					| awk -F" " '{print $6}')
 
 		if [ ! -f "${run}/${seg}/Run/NextHyDomain.{in,out}put" ]
 		then
@@ -63,7 +64,7 @@ for run in $sdbase ; do
 									 -IgnoreHist)
 		fi
 
-		echo -e $jobname"\t"$cores"\t"$subdomains"\t"$levels"\t"$seg"\t"$latesttime
+		echo -e $jobname"\t"$cores"\t"$subdomains"\t"$levels"\t"$performance"\t"$latesttime"\t"$seg
 
 	done
 
