@@ -27,16 +27,22 @@ for run in $sdbase ; do
 			while [ ! -f "${run}/${seg}/Run/TStepperDiag.dat" ] ;
 			do
 				h=$((h+1))
-				seg="$(ls --ignore "*.*" \
+				lastseg="$(ls --ignore "*.*" \
 						| grep -E "Lev${level}_[A-Z]{2,3}" \
 						| sort -n \
 						| tail --lines $h \
 						| head --lines 1)"
+				if [ "$lastseg" == "$seg" ] ; then
+					break
+				fi
+				seg=$lastseg
 			done
 		else
 			continue
 		fi
-
+		if [ ! -d "${seg}/Run" ] ; then
+			continue
+		fi
 		jobname=$(grep -i "Jobname" "${run}/${seg}/Run/MakeSubmit.input" \
 					| awk -F" " '{print $3}')
 		cores=$(grep -i 'Cores\ =\ ' "${run}/${seg}/Run/MakeSubmit.input" \
