@@ -21,6 +21,15 @@ for run in $sdbase ; do
 				| sort -n \
 				| tail --lines 1)"
 
+		# If user adds a file skip.txt to join directory, pass on
+		# printing the digest for Lev${level}
+		if [ -f "JoinedLev${level}/skip.txt" ] ; then
+			continue
+		fi
+
+		# Check to make sure Run/ run has output TStepperDiag.dat. If
+		# it hasn't, loop back over previous segments until it is
+		# found, then use that segment for the "latest time"
 		if [ -d "${seg}" ]
 		then
 			h=1
@@ -40,9 +49,11 @@ for run in $sdbase ; do
 		else
 			continue
 		fi
-		if [ ! -d "${seg}/Run" ] ; then
+		if [ ! -d "${seg}/Run" ] || [ ! -f "${seg}/Run/TStepperDiag.dat" ] ; then
 			continue
 		fi
+
+		# Grab the information we want to display in the digest
 		jobname=$(grep -i "Jobname" "${run}/${seg}/Run/MakeSubmit.input" \
 					| awk -F" " '{print $3}')
 		cores=$(grep -i 'Cores\ =\ ' "${run}/${seg}/Run/MakeSubmit.input" \
@@ -53,23 +64,22 @@ for run in $sdbase ; do
 		performance=$(tail -n 1 "${run}/${seg}/Run/TimeInfo.dat" \
 					| awk -F" " '{print $6}')
 
+		# Determine which HyDomain.input file to use
 		if [ ! -f "${run}/${seg}/Run/NextHyDomain.{in,out}put" ]
 		then
-			levels=$(cat "${run}/${seg}/Run/HyDomain.input" \
-					 | grep -E "BaseName = Interval.-Lev|BaseName = Interval-Lev" \
-					 | wc -l )
-			subdomains=$(DomainInfo -Nsubdomains \
-									-d "${run}/${seg}/Run/HyDomain.input" \
-									-IgnoreHist)
+			isnext=''
 		else
-			levels=$(cat "${run}/${seg}/Run/NextHyDomain.{in,out}put" \
-					 | grep -E "BaseName = Interval.-Lev|BaseName = Interval-Lev" \
-					 | wc -l )
-			subdomains=$(DomainInfo -Nsubdomains \
-									 -d "${run}/${seg}/Run/NextHyDomain.{in,out}put" \
-									 -IgnoreHist)
+			isnext='Next'
 		fi
 
+		levels=$(cat "${run}/${seg}/Run/${isnext}HyDomain."*"put" \
+				 | grep -E "BaseName = Interval.-Lev|BaseName = Interval-Lev" \
+				 | wc -l )
+		subdomains=$(DomainInfo -Nsubdomains \
+								-d "${run}/${seg}/Run/${isnext}HyDomain."*"put" \
+								-IgnoreHist)
+
+		# Print the digest table to stdout
 		echo -e $jobname"\t"$cores"\t"$subdomains"\t"$levels"\t"$performance"\t"$latesttime"\t"$seg
 
 	done
