@@ -10,7 +10,6 @@ source ./paths.conf
 
 while [ $# -ge 1 ] ; do
 	lev=$1
-		
 	shift
 
 	echo `date`
@@ -19,39 +18,48 @@ while [ $# -ge 1 ] ; do
 		echo "================================================================"
 		echo "Descending into $run"
 
-		seg="$(ls --ignore '*.*' \
-			   | grep ${lev}_ \
-			   | sort -n \
-			   | tail --lines 1)"
+		seg="$(ls  --ignore "*.*" \
+				| grep -E "${lev}_[A-Z]{2,3}" \
+				| sort -n \
+				| tail --lines 1)"
 		vmdir="${run}/${seg}/Run/VolumeMatterData"
-		if [ -d $vmdir ]
+
+		# Check to make sure there's h5 files in the vmdir. If there aren't
+		# any, loop back over previous segments until one is found, then use
+		# that segment.
+		if [ -d "${seg}" ]
 		then
 			echo "Candidate vmdir is: " $vmdir
-			lastH5="$(ls ${vmdir} \
-					  | grep -i "Vars_Interval" \
-					  | tail --line 1)"
-			echo $lastH5
+			lasth5=$(ls -tr "${vmdir}" | grep -i "Vars_Interval" | tail --lines 1)
 
 			h=1
-			while [ ! -f $vmdir/$lastH5 ] ;
+			while [ ! -f "${vmdir}/${lasth5}" ] ;
 			do
 				h=$((h+1))
-				echo "We didn't find any h5 files in" $seg
-				seg="$(ls --ignore '*.*' \
-					   | grep ${lev}_ \
-					   | sort -n \
-					   | tail --lines $h \
-					   | head --lines 1)" 
-				echo "Falling back to last segment" $seg
+				lastseg="$(ls --ignore "*.*" \
+						| grep -E "${lev}_[A-Z]{2,3}" \
+						| sort -n \
+						| tail --lines $h \
+						| head --lines 1)"
+				if [ "$lastseg" == "$seg" ] ; then
+					break
+				fi
+				seg=$lastseg
 				vmdir="${run}/${seg}/Run/VolumeMatterData"
-				lastH5="$(ls ${vmdir} \
-						  | grep -i "Vars_Interval" \
-						  | tail --line 1)"
+				lasth5=$(ls -tr "${vmdir}" | grep -i "Vars_Interval" | tail --lines 1)
 			done
+		else
+			continue
+		fi
+		if [ ! -d "${vmdir}" ] ; then
+			continue
+		fi
 
-			lasth5=$(ls -tr ${vmdir}/Vars_Interval*.h5 | tail --lines 1)
+		if [ -f "${vmdir}/${lasth5}" ] 
+		then
+			
 			echo "Latest written H5 file is: " $lasth5
-			h5time=$(TimesInH5File ${lasth5} \
+			h5time=$(TimesInH5File "${vmdir}/${lasth5}" \
 					 | awk -F" " '{print $4}'  \
 					 | tail --lines 1) 
 #			echo "The latest time is: " $h5time
@@ -100,6 +108,9 @@ while [ $# -ge 1 ] ; do
 			rm "${basedir}/tmp/h5time.txt"
 			rm "${basedir}/tmp/hytimes.txt"
 
+		else
+			echo "No H5 files found, continuing to next system.."
+			continue
 		fi
 	done
 
