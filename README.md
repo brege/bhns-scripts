@@ -30,4 +30,4 @@ These scripts are used to help with monitoring several [SpEC](https://black-hole
 
 ## TODO
 
-[ ] Figure out if there's a way to transition bash loops to a parallel method via MPI
+- [ ] Figure out if there's a way to transition bash loops to a parallel method via MPI
